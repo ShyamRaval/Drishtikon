@@ -13,5 +13,8 @@
     "@tailwindcss/vite": "^4.1.13",
     "astro": "^5.13.11",
     "tailwindcss": "^4.1.13"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "*"
   }
 }

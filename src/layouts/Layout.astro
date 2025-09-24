@@ -1,3 +1,45 @@
 ---
 import "../styles/global.css";
+const { title = "Drishtikon" } = Astro.props;
 ---
+
+<html lang="en" class="scroll-smooth">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <title>{title}</title>
+        <meta name="theme-color" content="#0a0a0a" />
+        <meta name="color-scheme" content="dark" />
+        <meta name="description" content="Drishtikon — A boutique, couple-run studio crafting photoreal 3D interiors and turnkey spaces." />
+    </head>
+    <body class="bg-[#0a0a0a] text-zinc-100 antialiased selection:bg-zinc-200/20 selection:text-white">
+        <header class="sticky top-0 z-40 backdrop-blur supports-[backdrop-filter]:bg-black/40">
+            <div class="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
+                <a href="/" class="inline-flex items-center gap-2 group">
+                    <span class="h-3 w-3 rounded-full bg-zinc-200 group-hover:bg-white transition-colors"></span>
+                    <span class="font-semibold tracking-wide">Drishtikon</span>
+                </a>
+                <nav class="hidden md:flex items-center gap-6 text-sm text-zinc-300">
+                    <a href="#work" class="hover:text-white">Work</a>
+                    <a href="#services" class="hover:text-white">Services</a>
+                    <a href="#contact" class="hover:text-white">Contact</a>
+                </nav>
+                <a href="#contact" class="ml-6 inline-flex items-center rounded-full border border-zinc-800 bg-white/5 px-4 py-2 text-sm text-zinc-100 hover:bg-white/10">
+                    Start a Project
+                </a>
+            </div>
+        </header>
+
+        <main class="mx-auto max-w-7xl px-6">
+            <slot />
+        </main>
+
+        <footer class="mt-24 border-t border-white/10">
+            <div class="mx-auto max-w-7xl px-6 py-8 text-xs text-zinc-400 flex items-center justify-between">
+                <p>© {new Date().getFullYear()} Drishtikon. All rights reserved.</p>
+                <p class="opacity-75">Crafted with care by a two-person team.</p>
+            </div>
+        </footer>
+    </body>
+</html>

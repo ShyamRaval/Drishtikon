@@ -8,6 +8,6 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()]
   },
-  site: 'https://shyamraval.github.io',
-  base: '/Drishtikon',
+  site: 'https://drishtikon.design',
+  base: '/',
 });

@@ -1,24 +1,28 @@
 ---
 import "../styles/global.css";
-const { title = "Drishtikon" } = Astro.props;
+import { content } from "../data/content";
+import { companyData } from "../data/company";
+
+const { title = content.meta.title } = Astro.props;
+const phonePrimaryClean = companyData.phone.primary.replace(/\s/g, '');
 ---
 
 <html lang="en" class="scroll-smooth">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" type="image/svg+xml" href="/Drishtikon/favicon.svg" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <title>{title}</title>
         <meta name="theme-color" content="#0a0a0a" />
         <meta name="color-scheme" content="dark" />
-        <meta name="description" content="Drishtikon — A boutique, couple-run studio crafting photoreal 3D interiors and turnkey spaces." />
+        <meta name="description" content={content.meta.description} />
     </head>
     <body class="bg-[#0a0a0a] text-zinc-100 antialiased selection:bg-zinc-200/20 selection:text-white">
         <header class="sticky top-0 z-40 backdrop-blur supports-[backdrop-filter]:bg-black/40">
             <div class="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
                 <a href="/" class="inline-flex items-center gap-2 group">
                     <span class="h-3 w-3 rounded-full bg-zinc-200 group-hover:bg-white transition-colors"></span>
-                    <span class="font-semibold tracking-wide">Drishtikon</span>
+                    <span class="font-semibold tracking-wide">{companyData.name}</span>
                 </a>
                 <nav class="hidden md:flex items-center gap-6 text-sm text-zinc-300">
                     <a href="#work" class="hover:text-white">Work</a>
@@ -36,9 +40,23 @@ const { title = "Drishtikon" } = Astro.props;
         </main>
 
         <footer class="mt-24 border-t border-white/10">
-            <div class="mx-auto max-w-7xl px-6 py-8 text-xs text-zinc-400 flex items-center justify-between">
-                <p>© {new Date().getFullYear()} Drishtikon. All rights reserved.</p>
-                <p class="opacity-75">Crafted with care by a two-person team.</p>
+            <div class="mx-auto max-w-7xl px-6 py-8">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+                    <div>
+                        <p class="text-xs text-zinc-400">© {new Date().getFullYear()} {companyData.name}. All rights reserved.</p>
+                    </div>
+                    <div class="flex flex-col gap-2 text-sm text-zinc-300">
+                        <a href={`tel:${phonePrimaryClean}`} class="hover:text-white">
+                            📞 {companyData.phone.primary} | {companyData.phone.secondary}
+                        </a>
+                        <a href={`mailto:${companyData.email}`} class="hover:text-white">
+                            📧 {companyData.email}
+                        </a>
+                        <a href={companyData.social.instagram.url} target="_blank" rel="noopener noreferrer" class="hover:text-white">
+                            📸 Instagram: {companyData.social.instagram.handle}
+                        </a>
+                    </div>
+                </div>
             </div>
         </footer>
     </body>

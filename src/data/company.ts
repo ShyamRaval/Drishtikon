@@ -4,7 +4,7 @@ export const companyData = {
     primary: "90813 22508",
     secondary: "90546 22508",
   },
-  email: "hello@drishtikon.studio",
+  email: "secondwinds39@gmail.com",
   location: {
     city: "Ahmedabad",
     state: "Gujarat",

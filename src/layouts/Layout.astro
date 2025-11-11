@@ -1,44 +1,76 @@
 ---
 import "../styles/global.css";
-const { title = "Drishtikon" } = Astro.props;
+import { content } from "../data/content";
+import { companyData } from "../data/company";
+
+const { title = content.meta.title } = Astro.props;
+const phonePrimaryClean = companyData.phone.primary.replace(/\s/g, '');
 ---
 
 <html lang="en" class="scroll-smooth">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" type="image/svg+xml" href="/Drishtikon/favicon.svg" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <title>{title}</title>
         <meta name="theme-color" content="#0a0a0a" />
         <meta name="color-scheme" content="dark" />
-        <meta name="description" content="Drishtikon — A boutique, couple-run studio crafting photoreal 3D interiors and turnkey spaces." />
+        <meta name="description" content={content.meta.description} />
     </head>
     <body class="bg-[#0a0a0a] text-zinc-100 antialiased selection:bg-zinc-200/20 selection:text-white">
-        <header class="sticky top-0 z-40 backdrop-blur supports-[backdrop-filter]:bg-black/40">
-            <div class="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
-                <a href="/" class="inline-flex items-center gap-2 group">
-                    <span class="h-3 w-3 rounded-full bg-zinc-200 group-hover:bg-white transition-colors"></span>
-                    <span class="font-semibold tracking-wide">Drishtikon</span>
-                </a>
-                <nav class="hidden md:flex items-center gap-6 text-sm text-zinc-300">
-                    <a href="#work" class="hover:text-white">Work</a>
-                    <a href="#services" class="hover:text-white">Services</a>
-                    <a href="#contact" class="hover:text-white">Contact</a>
-                </nav>
-                <a href="#contact" class="ml-6 inline-flex items-center rounded-full border border-zinc-800 bg-white/5 px-4 py-2 text-sm text-zinc-100 hover:bg-white/10">
-                    Start a Project
-                </a>
+        <header class="sticky top-0 z-50 backdrop-blur-md supports-[backdrop-filter]:bg-black/60 border-b border-white/5">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-14 md:h-18">
+                    <a href="/" class="inline-flex items-center gap-2.5 group transition-transform hover:scale-105">
+                        <span class="h-3.5 w-3.5 rounded-full bg-zinc-200 group-hover:bg-white transition-all duration-300 shadow-lg shadow-white/20"></span>
+                        <span class="font-bold text-lg tracking-wide text-white">{companyData.name}</span>
+                    </a>
+                    <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-zinc-300">
+                        <a href="#work" class="hover:text-white transition-colors duration-200 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-white after:transition-all hover:after:w-full">Work</a>
+                        <a href="#services" class="hover:text-white transition-colors duration-200 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-white after:transition-all hover:after:w-full">Services</a>
+                        <a href="#contact" class="hover:text-white transition-colors duration-200 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-white after:transition-all hover:after:w-full">Contact</a>
+                    </nav>
+                    <a href="#contact" class="inline-flex items-center rounded-full border border-white/20 bg-white/5 backdrop-blur-sm px-5 py-2.5 text-sm font-semibold text-white hover:bg-white/10 hover:border-white/30 transition-all duration-200 shadow-lg shadow-white/5">
+                        Start a Project
+                    </a>
+                </div>
             </div>
         </header>
 
-        <main class="mx-auto max-w-7xl px-6">
+        <main class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <slot />
         </main>
 
-        <footer class="mt-24 border-t border-white/10">
-            <div class="mx-auto max-w-7xl px-6 py-8 text-xs text-zinc-400 flex items-center justify-between">
-                <p>© {new Date().getFullYear()} Drishtikon. All rights reserved.</p>
-                <p class="opacity-75">Crafted with care by a two-person team.</p>
+        <footer class="mt-32 border-t border-white/10 bg-black/20">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+                <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-8 md:gap-12">
+                    <div class="flex-1">
+                        <div class="flex items-center gap-2.5 mb-4">
+                            <span class="h-3.5 w-3.5 rounded-full bg-zinc-200"></span>
+                            <span class="font-bold text-lg tracking-wide">{companyData.name}</span>
+                        </div>
+                        <p class="text-sm text-zinc-400 leading-relaxed">
+                            © {new Date().getFullYear()} {companyData.name}. All rights reserved.
+                        </p>
+                        <p class="text-sm text-zinc-500 mt-2 italic">
+                            Crafted with care by Mavericks.
+                        </p>
+                    </div>
+                    <div class="flex flex-col gap-4 text-sm md:text-base">
+                        <a href={`tel:${phonePrimaryClean}`} class="flex items-center gap-3 text-zinc-300 hover:text-white transition-colors duration-200 group">
+                            <span class="text-xl">📞</span>
+                            <span class="font-medium">{companyData.phone.primary} | {companyData.phone.secondary}</span>
+                        </a>
+                        <a href={`mailto:${companyData.email}`} class="flex items-center gap-3 text-zinc-300 hover:text-white transition-colors duration-200 group">
+                            <span class="text-xl">📧</span>
+                            <span class="font-medium">{companyData.email}</span>
+                        </a>
+                        <a href={companyData.social.instagram.url} target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 text-zinc-300 hover:text-white transition-colors duration-200 group">
+                            <span class="text-xl">📸</span>
+                            <span class="font-medium">Instagram: {companyData.social.instagram.handle}</span>
+                        </a>
+                    </div>
+                </div>
             </div>
         </footer>
     </body>

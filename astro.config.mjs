@@ -12,5 +12,4 @@ export default defineConfig({
     domains: ['res.cloudinary.com'],
   },
   site: 'https://drishtikon.design',
-  base: '/',
 });

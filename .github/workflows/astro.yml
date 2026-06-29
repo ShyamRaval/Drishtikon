@@ -25,66 +25,12 @@ jobs:
     steps:
       - name: Checkout your repository using git
         uses: actions/checkout@v4
-
-      # --- TEMP DIAGNOSTIC (delete after GitHub Pages images are fixed) ---
-      - name: Verify Cloudinary environment variables
-        run: |
-          missing=0
-          for var in PUBLIC_CLOUDINARY_CLOUD_NAME PUBLIC_CLOUDINARY_FOLDER CLOUDINARY_API_KEY CLOUDINARY_API_SECRET; do
-            if [ -z "${!var}" ]; then
-              echo "::error::$var is empty or not set. Add it as a Repository secret (Settings → Secrets and variables → Actions → Repository secrets)."
-              missing=1
-            else
-              echo "$var is set (length: ${#var})"
-            fi
-          done
-          if [ "$missing" -ne 0 ]; then
-            exit 1
-          fi
-
-      - name: Verify Cloudinary API access and image resources
-        run: |
-          http_code=$(curl -s -o /tmp/cloudinary.json -w "%{http_code}" \
-            -u "${CLOUDINARY_API_KEY}:${CLOUDINARY_API_SECRET}" \
-            "https://api.cloudinary.com/v1_1/${PUBLIC_CLOUDINARY_CLOUD_NAME}/resources/image/upload?prefix=${PUBLIC_CLOUDINARY_FOLDER}/&max_results=5")
-
-          if [ "$http_code" != "200" ]; then
-            echo "::error::Cloudinary API returned HTTP ${http_code}. Check CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET, and PUBLIC_CLOUDINARY_CLOUD_NAME."
-            cat /tmp/cloudinary.json
-            exit 1
-          fi
-
-          count=$(node -e "const d=require('/tmp/cloudinary.json'); console.log((d.resources||[]).length)")
-          if [ "$count" -lt 1 ]; then
-            echo "::error::Cloudinary API returned 200 but no images under prefix '${PUBLIC_CLOUDINARY_FOLDER}/'. Check PUBLIC_CLOUDINARY_FOLDER matches your Media Library folder name."
-            cat /tmp/cloudinary.json
-            exit 1
-          fi
-          echo "Cloudinary API OK — found ${count} sample resource(s) under ${PUBLIC_CLOUDINARY_FOLDER}/"
-
       - name: Install, build, and upload your site
         uses: withastro/action@v3
         with:
           # path: . # The root location of your Astro project inside the repository. (optional)
           node-version: 24 # The specific version of Node that should be used to build your site. Defaults to 20. (optional)
           # package-manager: pnpm@latest # The Node package manager that should be used to install dependencies and build your site. Automatically detected based on your lockfile. (optional)
-
-      - name: Verify optimized images were generated
-        run: |
-          if [ ! -d dist/_astro ]; then
-            echo "::error::dist/_astro does not exist — Astro did not generate optimized images."
-            exit 1
-          fi
-          webp_count=$(find dist/_astro -name '*.webp' 2>/dev/null | wc -l | tr -d ' ')
-          if [ "$webp_count" -lt 1 ]; then
-            echo "::error::No optimized .webp images in dist/_astro (found ${webp_count})."
-            echo "The build ran but no Cloudinary images were embedded. Compare these env vars with your working Vercel deployment."
-            ls -la dist/ || true
-            ls -la dist/_astro/ 2>/dev/null || true
-            exit 1
-          fi
-          echo "Build output OK — ${webp_count} optimized image(s) in dist/_astro"
-      # --- END TEMP DIAGNOSTIC ---
 
   deploy:
     needs: build

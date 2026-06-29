@@ -1,0 +1,130 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { Image } from "astro:assets";
+import {
+  getProjectBySlugWithDynamicImages,
+  getProjectImagePath,
+} from "../../utils/projects";
+
+export async function getStaticPaths() {
+  const { getAllProjects } = await import("../../utils/projects");
+  const projects = getAllProjects();
+
+  return projects.map((project) => ({
+    params: { slug: project.slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const project = await getProjectBySlugWithDynamicImages(slug!);
+const images = project?.images ?? [];
+
+if (!project) {
+  return Astro.redirect("/404");
+}
+---
+
+<Layout title={project.title || `Project: ${project.slug} | Drishtikon`}>
+  <article class="py-20 md:py-32">
+    <!-- Back Navigation -->
+    <div class="mb-12">
+      <a
+        href="/#work"
+        class="inline-flex items-center gap-2 text-zinc-400 hover:text-white transition-colors duration-200 group"
+      >
+        <svg
+          class="w-5 h-5 transform group-hover:-translate-x-1 transition-transform"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M15 19l-7-7 7-7"
+          />
+        </svg>
+        <span>Back to Work</span>
+      </a>
+    </div>
+
+    <!-- Project Header -->
+    <header class="mb-16">
+      {project.title && (
+        <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold mb-6">{project.title}</h1>
+      )}
+      <div class="flex flex-wrap gap-6 text-zinc-400 text-sm md:text-base">
+        {project.category && (
+          <div>
+            <span class="text-zinc-500">Category:</span> {project.category}
+          </div>
+        )}
+        {project.year && (
+          <div>
+            <span class="text-zinc-500">Year:</span> {project.year}
+          </div>
+        )}
+        {project.location && (
+          <div>
+            <span class="text-zinc-500">Location:</span> {project.location}
+          </div>
+        )}
+      </div>
+      {project.description && (
+        <p class="mt-6 text-lg md:text-xl text-zinc-300 leading-relaxed max-w-3xl">
+          {project.description}
+        </p>
+      )}
+    </header>
+
+    <!-- Project Gallery -->
+    {images.length > 0 ? (
+      <div class="columns-1 md:columns-2 lg:columns-3 gap-6 md:gap-8">
+        {images.map((imageFilename) => {
+          const imagePath = getProjectImagePath(slug!, imageFilename);
+          return (
+            <div class="group break-inside-avoid mb-6 md:mb-8 rounded-2xl border border-white/10 bg-white/5 overflow-hidden hover:border-white/20 transition-all duration-300">
+              <Image
+                src={imagePath}
+                alt={project.title || `Project image: ${imageFilename}`}
+                width={1600}
+                height={1200}
+                class="w-full h-auto object-contain"
+                loading="lazy"
+              />
+            </div>
+          );
+        })}
+      </div>
+    ) : (
+      <div class="rounded-2xl border border-white/10 bg-white/5 p-16 text-center">
+        <p class="text-zinc-400">No images available for this project.</p>
+      </div>
+    )}
+
+    <!-- Navigation Footer -->
+    <div class="mt-24 pt-12 border-t border-white/10">
+      <a
+        href="/#work"
+        class="inline-flex items-center gap-2 text-zinc-400 hover:text-white transition-colors duration-200 group"
+      >
+        <svg
+          class="w-5 h-5 transform group-hover:-translate-x-1 transition-transform"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M15 19l-7-7 7-7"
+          />
+        </svg>
+        <span>View All Projects</span>
+      </a>
+    </div>
+  </article>
+</Layout>
+

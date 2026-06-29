@@ -61,13 +61,6 @@ export const content = {
     title: "Our Recent Projects",
     description: "Our project displays the client's imagination and our precise craftsmanship.",
     subtitle: "From 2 BHK interiors in Ahmedabad to commercial projects in Gandhinagar, every project of Drishtikon tells a distinct story tailored to the client's concept and budget.",
-    items: [
-      { name: "Project 1", id: "project-1" },
-      { name: "Project 2", id: "project-2" },
-      { name: "Project 3", id: "project-3" },
-      { name: "Project 4", id: "project-4" },
-      { name: "Project 5", id: "project-5" },
-    ],
   },
   cta: {
     title: "Want to Create a Space That Aligns Your Vision?",

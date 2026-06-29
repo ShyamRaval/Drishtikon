@@ -8,6 +8,9 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()]
   },
+  image: {
+    domains: ['res.cloudinary.com'],
+  },
   site: 'https://drishtikon.design',
   base: '/',
 });
